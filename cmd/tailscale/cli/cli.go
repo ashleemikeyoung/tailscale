@@ -96,6 +96,7 @@ var localClient = local.Client{
 // RunWithContext runs the CLI. The args do not include the binary name.
 func RunWithContext(ctx context.Context, args []string) (err error) {
 	defer func() { err = brandErr(err) }()
+	Stdout, Stderr = branded(Stdout), branded(Stderr)
 	if runtime.GOOS == "linux" && os.Getenv("GOKRAZY_FIRST_START") == "1" && distro.Get() == distro.Gokrazy && os.Getppid() == 1 && len(args) == 0 {
 		// We're running on gokrazy and the user did not specify 'up'.
 		// Don't run the tailscale CLI and spam logs with usage; just exit.

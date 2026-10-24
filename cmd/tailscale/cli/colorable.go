@@ -19,10 +19,10 @@ import (
 // https://no-color.org/). If any of those is not the case, ok is false
 // and w is Stdout.
 func colorableOutput() (w io.Writer, ok bool) {
-	if Stdout != os.Stdout ||
+	if unbranded(Stdout) != os.Stdout ||
 		os.Getenv("NO_COLOR") != "" ||
 		!isatty.IsTerminal(os.Stdout.Fd()) {
 		return Stdout, false
 	}
-	return colorable.NewColorableStdout(), true
+	return branded(colorable.NewColorableStdout()), true
 }
