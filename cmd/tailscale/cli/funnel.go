@@ -177,7 +177,7 @@ func printFunnelWarning(sc *ipn.ServeConfig) {
 		}
 	}
 	if warn {
-		fmt.Fprintf(Stderr, "         run: `tailscale serve --help` to see how to configure handlers\n")
+		fmt.Fprint(Stderr, brandText("         run: `tailscale serve --help` to see how to configure handlers\n"))
 	}
 }
 

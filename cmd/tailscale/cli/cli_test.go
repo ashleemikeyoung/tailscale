@@ -70,8 +70,9 @@ func TestShortUsage(t *testing.T) {
 			}
 		}
 
-		// Check all words appear in the usage.
-		usage := c.ShortUsage
+		// Check all words appear in the usage, as printed (command references
+		// are rewritten to the branded command name, see brand.go).
+		usage := brandText(c.ShortUsage)
 		for _, word := range words {
 			var ok bool
 			usage, ok = cutWord(usage, word)
@@ -1724,11 +1725,11 @@ func TestDocs(t *testing.T) {
 		name := t.Name()
 		wantPfx := strings.ReplaceAll(strings.TrimPrefix(name, "TestDocs/"), "/", " ")
 		switch name {
-		case "TestDocs/tailscale/completion/bash",
-			"TestDocs/tailscale/completion/zsh":
+		case "TestDocs/" + brandCommand + "/completion/bash",
+			"TestDocs/" + brandCommand + "/completion/zsh":
 			wantPfx = "" // special-case exceptions
 		}
-		if !strings.HasPrefix(c.ShortUsage, wantPfx) {
+		if !strings.HasPrefix(brandText(c.ShortUsage), wantPfx) {
 			t.Errorf("ShortUsage should start with %q; got %q", wantPfx, c.ShortUsage)
 		}
 	}

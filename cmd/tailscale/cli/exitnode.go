@@ -148,7 +148,7 @@ func runExitNodeList(ctx context.Context, args []string) error {
 	fmt.Fprintln(w)
 	fmt.Fprintln(w)
 	fmt.Fprintln(w, "# To view the complete list of exit nodes for a country, use `tailscale exit-node list --filter=` followed by the country name.")
-	fmt.Fprintln(w, "# To use an exit node, use `tailscale set --exit-node=` followed by the IP or hostname.")
+	fmt.Fprintln(w, brandText("# To use an exit node, use `tailscale set --exit-node=` followed by the IP or hostname."))
 	if hasAnyExitNodeSuggestions(peers) {
 		fmt.Fprintln(w, "# To have Tailscale suggest an exit node, use `tailscale exit-node suggest`.")
 	}
@@ -170,7 +170,7 @@ func runExitNodeSuggest(ctx context.Context, args []string) error {
 		fmt.Println("No exit node suggestion is available.")
 		return nil
 	}
-	fmt.Printf("Suggested exit node: %v\nTo accept this suggestion, use `tailscale set --exit-node=%v`.\n", res.Name, shellquote.Join(res.Name))
+	fmt.Print(brandText(fmt.Sprintf("Suggested exit node: %v\nTo accept this suggestion, use `tailscale set --exit-node=%v`.\n", res.Name, shellquote.Join(res.Name))))
 	return nil
 }
 

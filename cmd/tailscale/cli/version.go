@@ -83,6 +83,7 @@ func runVersion(ctx context.Context, args []string) error {
 	}
 
 	if st == nil {
+		outln(brandProduct + " (Qavats). " + brandCredit)
 		outln(version.String())
 		if versionArgs.upstream {
 			printf("  upstream: %s\n", upstreamVer)

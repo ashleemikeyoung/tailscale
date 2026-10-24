@@ -154,11 +154,11 @@ func switchProfile(ctx context.Context, args []string) error {
 		return listProfiles(ctx)
 	}
 	if switchArgs.json {
-		outln("--json argument cannot be used with tailscale switch NAME")
+		outln(brandText("--json argument cannot be used with tailscale switch NAME"))
 		os.Exit(1)
 	}
 	if len(args) != 1 {
-		outln("usage: tailscale switch NAME")
+		outln(brandText("usage: tailscale switch NAME"))
 		os.Exit(1)
 	}
 	cp, all, err := localClient.ProfileStatus(ctx)
@@ -201,7 +201,7 @@ func switchProfile(ctx context.Context, args []string) error {
 		case "NeedsLogin":
 			outln("Logged out.")
 			outln("To log in, run:")
-			outln("  tailscale up")
+			outln("  " + brandCommand + " up")
 			return nil
 		case "Running":
 			outln("Success.")
@@ -217,7 +217,7 @@ func switchProfile(ctx context.Context, args []string) error {
 
 func removeProfile(ctx context.Context, args []string) error {
 	if len(args) != 1 {
-		outln("usage: tailscale switch remove NAME")
+		outln(brandText("usage: tailscale switch remove NAME"))
 		os.Exit(1)
 	}
 	cp, all, err := localClient.ProfileStatus(ctx)

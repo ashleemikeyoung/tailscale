@@ -95,6 +95,7 @@ var localClient = local.Client{
 
 // RunWithContext runs the CLI. The args do not include the binary name.
 func RunWithContext(ctx context.Context, args []string) (err error) {
+	defer func() { err = brandErr(err) }()
 	if runtime.GOOS == "linux" && os.Getenv("GOKRAZY_FIRST_START") == "1" && distro.Get() == distro.Gokrazy && os.Getppid() == 1 && len(args) == 0 {
 		// We're running on gokrazy and the user did not specify 'up'.
 		// Don't run the tailscale CLI and spam logs with usage; just exit.
@@ -262,14 +263,13 @@ func newRootCmd(tb ...testenv.TB) *ffcli.Command {
 
 	var rootCmd *ffcli.Command
 	rootCmd = &ffcli.Command{
-		Name:       "tailscale",
-		ShortUsage: "tailscale [flags] <subcommand> [command flags]",
-		ShortHelp:  "The easiest, most secure way to use WireGuard.",
+		Name:       brandCommand,
+		ShortUsage: brandCommand + " [flags] <subcommand> [command flags]",
+		ShortHelp:  brandProduct + ": the Qavats private network.",
 		LongHelp: strings.TrimSpace(`
-For help on subcommands, add --help after: "tailscale status --help".
+For help on subcommands, add --help after: "` + brandCommand + ` status --help".
 
-This CLI is still under active development. Commands and flags will
-change in the future.
+` + brandCredit + `
 `),
 		Subcommands: nonNilCmds(
 			upCmd,
@@ -442,14 +442,14 @@ func usageFuncOpt(c *ffcli.Command, withDefaults bool) string {
 
 	fmt.Fprintf(&b, "USAGE\n")
 	if c.ShortUsage != "" {
-		fmt.Fprintf(&b, "  %s\n", strings.ReplaceAll(c.ShortUsage, "\n", "\n  "))
+		fmt.Fprintf(&b, "  %s\n", strings.ReplaceAll(brandText(c.ShortUsage), "\n", "\n  "))
 	} else {
 		fmt.Fprintf(&b, "  %s\n", c.Name)
 	}
 	fmt.Fprintf(&b, "\n")
 
 	if help := strings.TrimPrefix(c.LongHelp, hidden); help != "" {
-		fmt.Fprintf(&b, "%s\n\n", help)
+		fmt.Fprintf(&b, "%s\n\n", brandText(help))
 	}
 
 	if len(c.Subcommands) > 0 {

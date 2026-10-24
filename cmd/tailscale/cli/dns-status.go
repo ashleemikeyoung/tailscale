@@ -194,9 +194,9 @@ func formatDNSStatusText(data *tsdnsjsonv0.StatusResponse, all bool) string {
 	fmt.Fprintf(&sb, "=== 'Use Tailscale DNS' status ===\n")
 	fmt.Fprintf(&sb, "\n")
 	if data.TailscaleDNS {
-		fmt.Fprintf(&sb, "Tailscale DNS: enabled.\n\nTailscale is configured to handle DNS queries on this device.\nRun 'tailscale set --accept-dns=false' to revert to your system default DNS resolver.\n")
+		fmt.Fprint(&sb, brandText("Tailscale DNS: enabled.\n\nTailscale is configured to handle DNS queries on this device.\nRun 'tailscale set --accept-dns=false' to revert to your system default DNS resolver.\n"))
 	} else {
-		fmt.Fprintf(&sb, "Tailscale DNS: disabled.\n\n(Run 'tailscale set --accept-dns=true' to start sending DNS queries to the Tailscale DNS resolver)\n")
+		fmt.Fprint(&sb, brandText("Tailscale DNS: disabled.\n\n(Run 'tailscale set --accept-dns=true' to start sending DNS queries to the Tailscale DNS resolver)\n"))
 	}
 	fmt.Fprintf(&sb, "\n")
 	fmt.Fprintf(&sb, "=== MagicDNS configuration ===\n")
